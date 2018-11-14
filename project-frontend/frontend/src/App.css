@@ -1,0 +1,139 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.register-container{
+  margin-left:30% ; 
+  margin-right:30% ;
+  align-items: left;
+}
+input#first_name {
+  width:30%;
+}
+
+nav.navbar.navbar-expand-sm.bg-dark.navbar-dark{
+  line-height:2.5;
+}
+
+.side-nav.default-theme{
+  margin:0px;
+}
+
+.side-nav.default-theme
+{background-color:#2f4050!important;}
+ .side-nav-item-title
+ {padding: 10px 20px 10px 10px;
+
+   color:#a7b1c2;
+   display:block;
+   font-size:2rem !important;
+   font-weight:600;
+   text-decoration:none
+  }
+ .side-nav-item-title:hover{
+   color:#a7b1c2;
+   text-decoration:none
+  }
+ .side-nav-item-title:hover{
+   background-color:#293846;
+   color:#fff
+  }
+ .side-nav-item{
+  padding: 10px 20px 10px 10px;
+  position:relative;
+  border:10px !important;
+  border-color:white !important;
+  font-size:2rem!important;
+  }
+
+  .dashboard-container{
+    background-color: #e9ecef;
+    height:70px;
+    margin-bottom:50px;
+    padding-top: 10px;
+    font-family: -webkit-body;
+  }
+  .total-dash-container{
+    width:85%;
+  }
+  .dashboard-left-container{
+    color:green;
+    width: 15%;
+    background-color: #e9ecef;
+    padding-top:30px;
+    padding-bottom:30px;
+    text-align: center;
+    margin-left:15%;
+    margin-right:20%;
+    border-radius: 0.5em;
+    border: red solid;
+
+  }
+  .dashboard-right-container{
+    color:red;  
+    width: 15%;
+    background-color: #e9ecef;
+    padding-top:30px;
+    padding-bottom:30px;
+    text-align: center;
+    margin-left:20%;
+    margin-right:15%;
+    border-width: 10px;
+    border-color:green;
+    border-radius: 0.5em;
+    border: green solid;
+
+  }
+  .dashboard-right-container> span{
+    font-size:30px;
+  }
+  .dashboard-left-container> span{
+    font-size:30px;
+  }
+  .sky-container{
+    border-width:10px;
+    border-color:pink;
+  }
+  .bar-container{
+    width:25%;
+  }
+.sub-comp-container{
+  width:75%;
+}
+.dashboardheader{
+  padding-left:20px;
+}
+.side-nav-item-link  {
+  font-size:1.8rem !important;
+}
+th{
+  text-align:center;
+}
