@@ -9,7 +9,7 @@ import FlashMessage from 'react-flash-message'
 class IdeaStore extends React.Component {
     constructor() {
         super();
-        this.state = { tabIndex: 0 };
+        this.state = { tabIndex: 0 , 'value': localStorage.getItem('auth_token')};
       }
       render() {
         return (
@@ -18,8 +18,8 @@ class IdeaStore extends React.Component {
               <Tab>IdeaForm</Tab>
               <Tab>IdeaTable</Tab>
             </TabList>
-            <TabPanel><IdeaForm user_id = {this.props.match.params.user_id}/></TabPanel>
-            <TabPanel><IdeaTable user_id = {this.props.match.params.user_id}/></TabPanel>
+            <TabPanel><IdeaForm /></TabPanel>
+            <TabPanel><IdeaTable /></TabPanel>
           </Tabs>
         );
       }
@@ -29,10 +29,15 @@ class IdeaStore extends React.Component {
         event.preventDefault();
         const data = new FormData(event.target);
     
-        fetch(`http://127.0.0.1:8000/user-iom/${this.props.user_id}/store/create/`,
+        fetch(`http://127.0.0.1:8000/user-iom/store/create/`,
         {
           method: 'POST',
           body: data,
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': this.state.value
+                }
         }).then(this.handleRedirect)
       }
       handleRedirect(res){
@@ -80,14 +85,21 @@ class IdeaStore extends React.Component {
   class IdeaTable extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {'value': this.props.user_id,  todos: [], activePage: 1, perPage: 10, totalCount: 0}  
+      this.state = {'value': localStorage.getItem('auth_token'),  todos: [], activePage: 1, perPage: 10, totalCount: 0}  
     }
 
     async componentDidMount() {
       try {
         debugger
 
-        const res = await fetch(`http://127.0.0.1:8000/user-iom/${this.state.value}/store/${this.state.perPage}/${this.state.activePage}`)
+        const res = await fetch(`http://127.0.0.1:8000/user-iom/store/${this.state.perPage}/${this.state.activePage}`,{
+        method: 'GET',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': this.state.value
+                }
+                })
         const response_obj = await res.json();
         debugger
         const todos = response_obj.store_data
@@ -106,7 +118,12 @@ class IdeaStore extends React.Component {
 
     async handlePageChange(pageNumber) {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/user-iom/${this.state.value}/store/${this.state.perPage}/${pageNumber}`)
+        const res = await fetch(`http://127.0.0.1:8000/user-iom/store/${this.state.perPage}/${pageNumber}`,{method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': this.state.value
+        }})
         const response_obj =  await res.json();
         const todos = response_obj.store_data
         const totalCount = response_obj.total_count;
@@ -136,7 +153,7 @@ class IdeaStore extends React.Component {
               totalItemsCount={this.state.totalCount}
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
-              />
+              />}
         table  =  <table className="table border">
       <thead>
           <tr className ="text-center">
@@ -162,7 +179,10 @@ class IdeaStore extends React.Component {
               )
               )}
           </tbody>
-      </table>}
+      </table>
+       let scut = this.state.todos.length >0 ? ''
+       : (<div style = {{backgroundColor: 'darkgray', color : 'white', textAlign:"center", lineHeight:"40px"}}>NO RESULT TO DISPLAY</div>)
+  
       return(
         <div className="container">
         <div>
@@ -170,6 +190,9 @@ class IdeaStore extends React.Component {
         </div>
         <div >
           {table}
+        </div>
+        <div >
+          {scut}
         </div>
         </div>
       )}

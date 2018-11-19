@@ -4,32 +4,39 @@ import {BrowserRouter, Redirect } from 'react-router-dom';
 import './Sidenav.css';
 import { SideNav, Chevron, Icon } from 'react-side-nav';
 import {Link } from "react-router-dom";
-class Sidenavbar extends Component {
-  constructor()
+
+class Sidenavigationbar extends Component {
+  constructor(props) {
+    debugger
+    super(props);
+    debugger;
+    this.state = {bar_names : props.bar_names, bar_url : props.bar_url}
+  }
+    
      menuItems = [
         { id: 1,
           label: 'Menu',
           icon: 'fas fa-bars',
           items: [
             { id: 11,
-                label: 'DashBoard',
+                label: this.state.bar_names['first'],
                 icon: 'fas fa-pencil-alt',
-                link: `/user-iom/${this.props.match.params.user_id}/dashboard`
+                link: this.props.bar_url['first'],
               },
             { id: 12,
-              label: 'TeamView',
+              label: this.state.bar_names['second'],
               icon: 'fab fa-users',
-              link: `/user-iom/${this.props.match.params.user_id}/teamview`,
+              link: this.props.bar_url['second'],
             },
             { id: 13,
-              label: 'IdeaStore',
+              label: this.state.bar_names['third'],
               icon: 'fas fa-lightbulb',
-              link: `/user-iom/${this.props.match.params.user_id}/ideastore`,
+              link: this.props.bar_url['third'],
             },
             { id: 14,
-                label: 'Voting',
+                label: this.state.bar_names['fourth'],
                 icon: 'fas fa-vote-yea',
-                link: `/user-iom/${this.props.match.params.user_id}/voting`,
+                link: this.props.bar_url['fourth'],
               },
           ],
         },
@@ -41,6 +48,7 @@ class Sidenavbar extends Component {
 
 
     render() {
+      debugger
             return(
                 <SideNav
                 items={this.menuItems}
@@ -51,4 +59,4 @@ class Sidenavbar extends Component {
     );
 }
 }
-export default Sidenavbar;  
+export default Sidenavigationbar;  

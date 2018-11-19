@@ -8,15 +8,32 @@ import Pagination from "react-js-pagination";
 class VoteTable extends Component {
     constructor(props) {
         super(props);
-        this.handleVote = this.handleVote.bind(this);
-
-        this.state = {'value': this.props.match.params.user_id,  todos: [], sodos: [], activePage: 1, perPage: 10, totalCount: 0, votesleft: 0}  
+        this.state = {'value': localStorage.getItem('auth_token') ,  todos: [], sodos: [], activePage: 1, perPage: 10, totalCount: 0, votesleft: 0}  
       }
-    
+      setRedirect = () => {
+        this.setState({
+          redirect: true
+        })
+      }
+      renderRedirect = () => {
+        if (this.state.redirect) {
+          return <Redirect to='/login' />
+        }
+      }
     async  componentWillMount(){
         try {
             debugger
-            const res = await fetch(`http://127.0.0.1:8000/user-iom/${this.state.value}/voting/${this.state.perPage}/${this.state.activePage}`,{method:'GET'})
+            const res = await fetch(`http://127.0.0.1:8000/user-iom/voting/${this.state.perPage}/${this.state.activePage}`,{
+                method: 'GET',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': this.state.value
+                }
+              })
+              if (res.status == 401) {
+                this.setRedirect()
+              }
             const response_obj = await res.json();
             debugger
             const todos = response_obj.store_data
@@ -39,13 +56,21 @@ class VoteTable extends Component {
         debugger
         let data = {'store_id' : store_id}
         const res =
-        fetch(`http://127.0.0.1:8000/user-iom/${this.state.value}/voting/${this.state.perPage}/${this.state.activePage}`,
+        fetch(`http://127.0.0.1:8000/user-iom/voting/${this.state.perPage}/${this.state.activePage}`,
         {
           method: 'POST',
           body: JSON.stringify(data),
+          headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': this.state.value
+                }
         })
         if (res.status == 201){
             window.location.reload()
+        }
+        else{
+          return <Redirect to='/login' />
         }
       }
 
@@ -95,6 +120,7 @@ class VoteTable extends Component {
        : (<div style = {{backgroundColor: 'darkgray', color : 'white', textAlign:"center", lineHeight:"40px"}}>NO RESULT TO DISPLAY</div>)
         return(
             <div className="container">
+            {this.renderRedirect()}
             <div>
               {paginate}
             </div>

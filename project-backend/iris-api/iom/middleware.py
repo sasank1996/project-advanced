@@ -1,5 +1,7 @@
 from re import sub
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponse, HttpResponseRedirect
+import jwt
 
 class GetUser(object):
 
@@ -10,18 +12,18 @@ class GetUser(object):
     return self.get_response(request)
     
   def process_view(self, request, view_func, view_args, view_kwargs):
-    import pdb
-    pdb.set_trace()
     header_token = request.META.get('HTTP_AUTHORIZATION', None)
     if header_token is not None:
       try:
-        token = sub('Token ', '', request.META.get('HTTP_AUTHORIZATION', None))
-        token_obj = Token.objects.get(key = token)
-        request.user = token_obj.user
-      except Token.DoesNotExist:
-        pass
+        token = jwt.decode(header_token, "SECRET_KEY", algorithm='HS256')
+        user =0
+        user = User.objects.filter(id = token["id"]).count()
+        if user ==1 :
+          pass
+        else :
+          return HttpResponse(status = 401)
+      except :
+          return HttpResponse(status = 401)
     #This is now the correct user
-    print (request.user)
-
   def process_request(self, request):
     print ('"The Dark Knight is the best superhero movie of all time"')

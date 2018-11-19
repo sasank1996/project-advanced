@@ -4,13 +4,23 @@ import {BrowserRouter, Redirect } from 'react-router-dom';
 
 class DashBoardForm extends Component {
     constructor(props) {
+        debugger
         super(props);
-        this.state = {todos: ''} 
+        this.state = {todos: '','value': localStorage.getItem('auth_token')} 
       }
       async componentWillMount(){
-        const res = await fetch(`http://127.0.0.1:8000/post_register/${this.props.match.params.user_id}`).then(await function(response){
+        const res = await fetch(`http://127.0.0.1:8000/user-iom/post_register`,
+        {method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': this.state.value
+        }
+        }).then(function(response){
             return response.json()
-        })
+        }).then(function(data2) {
+            console.log('data',data2)
+            return data2})
         this.setState({todos : res})
         debugger
       }
