@@ -4,7 +4,6 @@ import {BrowserRouter, Redirect } from 'react-router-dom';
 
 class DashBoardForm extends Component {
     constructor(props) {
-        debugger
         super(props);
         this.state = {todos: '','value': localStorage.getItem('auth_token')} 
       }
@@ -22,9 +21,8 @@ class DashBoardForm extends Component {
             console.log('data',data2)
             return data2})
         this.setState({todos : res})
-        debugger
       }
-    render() {debugger
+    render() {
         let dash =   <div>             
             <div class = "dashboard-container">
             <h1 class= "dashboardheader">DashBoard</h1>

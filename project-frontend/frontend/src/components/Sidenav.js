@@ -6,12 +6,8 @@ import { SideNav, Chevron, Icon } from 'react-side-nav';
 import {Link } from "react-router-dom";
 
 class Sidenavigationbar extends Component {
-  constructor(props) {
-    debugger
-    super(props);
-    debugger;
-    this.state = {bar_names : props.bar_names, bar_url : props.bar_url}
-  }
+    state = {bar_names : this.props.bar_names, bar_url : this.props.bar_url,bar_icons : this.props.bar_icons}
+
     
      menuItems = [
         { id: 1,
@@ -20,22 +16,22 @@ class Sidenavigationbar extends Component {
           items: [
             { id: 11,
                 label: this.state.bar_names['first'],
-                icon: 'fas fa-pencil-alt',
+                icon: this.state.bar_icons['first'],
                 link: this.props.bar_url['first'],
               },
             { id: 12,
               label: this.state.bar_names['second'],
-              icon: 'fab fa-users',
+              icon: this.state.bar_icons['second'],
               link: this.props.bar_url['second'],
             },
             { id: 13,
               label: this.state.bar_names['third'],
-              icon: 'fas fa-lightbulb',
+              icon: this.state.bar_icons['third'],
               link: this.props.bar_url['third'],
             },
             { id: 14,
                 label: this.state.bar_names['fourth'],
-                icon: 'fas fa-vote-yea',
+                icon: this.state.bar_icons['fourth'],
                 link: this.props.bar_url['fourth'],
               },
           ],
@@ -48,7 +44,6 @@ class Sidenavigationbar extends Component {
 
 
     render() {
-      debugger
             return(
                 <SideNav
                 items={this.menuItems}

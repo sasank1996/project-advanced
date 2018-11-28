@@ -20,7 +20,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class StoreIdeaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Idea
-        fields = ('id', 'user_id', 'team_name', 'manager_name', 'theme', 'application', 'vote_count')
+        fields = ('id', 'user_id', 'team_name', 'manager_name', 'theme', 'application', 'vote_count','datafile')
 class UserStoreVoteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserStoreVote

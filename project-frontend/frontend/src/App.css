@@ -233,3 +233,37 @@ margin-bottom:130px;
   font-size:40px;
   padding-bottom:30px;
 }
+.cold-container{
+  height:860px
+}
+.pink-bar{
+  width:10px !important ;
+}
+.glow { text-shadow: 0px 0px 5px gold; 
+}
+.marquee{
+  animation: marquee 7s linear infinite;
+} 
+@keyframes marquee {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(0, 99%); }
+}
+.css-serial {
+  counter-reset: serial-number; /* Set the serial number counter to 0 */
+ }
+ .css-serial td:first-child>span:before {
+  counter-increment: serial-number; /* Increment the serial number counter */
+  content: counter(serial-number); /* Display the counter */
+ }
+
+ .clickable:hover{
+   background-color: darkgray;
+   cursor: pointer;
+   color:white;
+ }
+ .vote-ellipsis{
+  max-width: 190px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+ }

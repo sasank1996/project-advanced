@@ -8,7 +8,6 @@ import './Register.css';
 
 class RegisterForm extends Component {
     constructor(props) {
-      debugger
       super(props);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleRedirect = this.handleRedirect.bind(this);
@@ -73,7 +72,6 @@ class RegisterForm extends Component {
 
     handleRedirect(res){
         console.log(res)
-      debugger
       console.log(res['status'] === 201)
       if( res['status'] === 201 ){
         localStorage.setItem('auth_token', res['token'])
@@ -103,7 +101,6 @@ class RegisterForm extends Component {
         console.log('response',response)
         return response.json()
       }).then((data2) => {
-        debugger
         console.log('data',data2)
         this.handleRedirect(data2)            });
             
@@ -111,9 +108,7 @@ class RegisterForm extends Component {
     }
 
     async  handleSubmit1(event) {
-      debugger
       event.preventDefault();
-      debugger
       const data = new FormData(event.target);
       if(this.handleValidation()){
        const data1 = await fetch(`http://127.0.0.1:8000${this.state.url}/`, {
@@ -193,7 +188,6 @@ class RegisterForm extends Component {
       </div>
         </div>}
         if  (this.state.url === '/login'){
-          debugger
           console.log("data ",this.state.id)
             page_ui=   <div className="login-container">
             <h2>Login</h2>
@@ -210,9 +204,10 @@ class RegisterForm extends Component {
               </div>
               <button type="submit" className="btn btn-default">Login</button>
             </form>
-            {(this.state.redirect) ? ((this.state.id == 1)? (<Redirect to='/admin/user-iom' ></Redirect>) : (<Redirect to='/user-iom' ></Redirect>) ): (<Redirect to="/login"></Redirect>)}
           </div>
         }
+       let x =   (this.state.redirect) ? ((this.state.id == 1)? (window.location.href ='/admin/user-iom') : (window.location.href = '/user-iom' ) ): ''
+
       return (
         <div>
             {page_ui}

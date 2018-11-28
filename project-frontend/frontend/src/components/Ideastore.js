@@ -5,6 +5,8 @@ import './Ideastore.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Pagination from "react-js-pagination";
 import FlashMessage from 'react-flash-message'
+import axios from 'axios';
+import Select from 'react-select';
 
 class IdeaStore extends React.Component {
     constructor() {
@@ -25,19 +27,56 @@ class IdeaStore extends React.Component {
       }
   }
   class IdeaForm extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {'value': localStorage.getItem('auth_token'),users_list:[],options:[],process:''}  
+    }
+ 
+
+    
+    async componentWillMount() {
+      try {
+        
+       let headers= {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': this.state.value
+        }
+
+        const res = await axios.get(`http://127.0.0.1:8000/user-iom/store/create/}`,{
+                headers:headers
+                }).then(function(response) {return response.data})
+        const users_list = res
+        this.setState({
+          users_list  
+        });
+      } catch (e) {
+        console.log(e);
+      }    
+
+    }
+
+
+ logChange = (value) => {
+  this.setState({process:value});
+}
+ 
+
+
+
     handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.target);
-    
-        fetch(`http://127.0.0.1:8000/user-iom/store/create/`,
-        {
-          method: 'POST',
-          body: data,
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': this.state.value
-                }
+        let file =document.querySelector('#datafile')
+        data.set('file',file)
+        let headers= {
+          'Content-Type': 'multipart/form-data',
+           'charset':"UTF-8",
+          'Authorization': this.state.value,
+        }
+        axios.post(`http://127.0.0.1:8000/user-iom/store/create/`,
+        data,
+          {headers:headers
         }).then(this.handleRedirect)
       }
       handleRedirect(res){
@@ -50,7 +89,25 @@ class IdeaStore extends React.Component {
         }
 
     render(){
-        return(
+      let options =[]
+      this.state.users_list.map(store =>(
+        options.push({'value':store.email,'label':store.email})
+      ))
+      console.log('options',options)
+      let mur =''
+      if (options.length > 0){
+        mur =              <Select
+        value = {this.state.process}
+        name="filter__statistics"
+        options={options}
+        onChange={this.logChange}
+        isMulti ={true}
+        isSearchable = {true}
+        className = "select-check"
+        placeholder = "select team mates..."
+      /> 
+      }
+      return(
             <div className="container">
             <div>
               <h3> Add New Idea</h3>
@@ -71,10 +128,17 @@ class IdeaStore extends React.Component {
                 <label htmlFor="application">Application / Uses : </label>
                 <textarea id="application" className ="form-control" placeholder="Enter Applications" name="application" type="text"/>
                 </div>
+                <label htmlFor="application">Team : </label>
+                <div className="form-group">
+                {mur}
+                </div>
+
                 <div className="form-group">
                 <label htmlFor="application">Data File:  </label>
                 <input id="datafile" type="file"  name="datafile"/>
                 </div>
+
+
                 <button type="submit" className="btn btn-default">Submit</button>
             </form>
             </div>
@@ -90,7 +154,7 @@ class IdeaStore extends React.Component {
 
     async componentDidMount() {
       try {
-        debugger
+        
 
         const res = await fetch(`http://127.0.0.1:8000/user-iom/store/${this.state.perPage}/${this.state.activePage}`,{
         method: 'GET',
@@ -101,7 +165,6 @@ class IdeaStore extends React.Component {
                 }
                 })
         const response_obj = await res.json();
-        debugger
         const todos = response_obj.store_data
         const totalCount = response_obj.total_count;
 
@@ -116,7 +179,7 @@ class IdeaStore extends React.Component {
 
     }
 
-    async handlePageChange(pageNumber) {
+     handlePageChange = async(pageNumber) => {
       try {
         const res = await fetch(`http://127.0.0.1:8000/user-iom/store/${this.state.perPage}/${pageNumber}`,{method: 'GET',
         headers: {
@@ -154,7 +217,7 @@ class IdeaStore extends React.Component {
               pageRangeDisplayed={5}
               onChange={this.handlePageChange}
               />}
-        table  =  <table className="table border">
+        table  =  <table className="table border" style={{overflow:'hidden'}}>
       <thead>
           <tr className ="text-center">
           <th scope="col">Employee Name</th>
@@ -163,6 +226,7 @@ class IdeaStore extends React.Component {
           <th scope="col">Theme</th>
           <th scope="col" >Application</th>
           <th scope="col" >Votes</th>
+          <th scope="col" >File</th>
 
           </tr>
       </thead>
@@ -175,6 +239,8 @@ class IdeaStore extends React.Component {
                       <td>{store.theme}</td>
                       <td>{store.application}</td>
                       <td>{store.vote_count}</td>
+                      <td><a href={require('../assets/download.jpeg')}  class= "fas fa-file" download></a></td>
+
                   </tr>
               )
               )}

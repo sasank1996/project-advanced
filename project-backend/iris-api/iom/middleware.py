@@ -25,5 +25,3 @@ class GetUser(object):
       except :
           return HttpResponse(status = 401)
     #This is now the correct user
-  def process_request(self, request):
-    print ('"The Dark Knight is the best superhero movie of all time"')
